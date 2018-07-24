@@ -1,4 +1,4 @@
-package vince.gencode;
+package com.uetty.generator;
 
 import java.io.BufferedReader;
 import java.io.File;
