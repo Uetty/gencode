@@ -8,7 +8,7 @@ public enum KeyType {
 	
 	public static KeyType fromName(String name) {
 		for (KeyType type : KeyType.values()) {
-			if (type.name().equals(name)) {
+			if (type.name().equalsIgnoreCase(name)) {
 				return type;
 			}
 		}

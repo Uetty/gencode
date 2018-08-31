@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.uetty.generator.constant.Config;
 import com.uetty.generator.db.Column;
 import com.uetty.generator.db.Table;
 import com.uetty.generator.db.TableScanner;
@@ -50,7 +51,7 @@ public class CustomCodeGen {
 		cmap.putIfNotExist(CmdOpt.DB_USER_OPT.str, Config.get("database.username"));
 		cmap.putIfNotExist(CmdOpt.DB_PASS_OPT.str, Config.get("database.password"));
 		cmap.putIfNotExist(CmdOpt.TYPE_TINYINT_OPT.str, TypeGen.TYPE_NO_BOOLEAN + "");
-		cmap.put(CmdOpt.GEN_TYPE_OPT.str, Config.GEN_TYPE_INSERT + "");
+		cmap.putIfNotExist(CmdOpt.GEN_TYPE_OPT.str, Config.GEN_TYPE_INSERT + "");
 		return cmap;
 	}
 	
@@ -67,7 +68,7 @@ public class CustomCodeGen {
 			String javaObjName = params.get(CmdOpt.JAVA_OBJ_NAME_OPT.str);
 			String resultSetName = params.get(CmdOpt.RESULT_SET_NAME_OPT.str);
 			String tableName = params.get(CmdOpt.TABLE_NAME_OPT.str);
-			
+			System.out.println("-------------");
 			
 			TypeGen typeGen = null;
 			if (typeOfTinyint == TypeGen.TYPE_NO_BOOLEAN) {

@@ -1,4 +1,4 @@
-package com.uetty.generator;
+package com.uetty.generator.constant;
 
 import java.util.ResourceBundle;
 

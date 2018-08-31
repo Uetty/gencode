@@ -5,7 +5,7 @@
 
 	<groupId>com.uetty</groupId>
 	<artifactId>bean-generator</artifactId>
-	<version>1.0.1-RC</version>
+	<version>1.0.2-RC</version>
 	<packaging>jar</packaging>
 
 	<name>bean-generator</name>
@@ -41,20 +41,32 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1.1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.uetty.generator.App</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
 				<executions>
 					<execution>
-						<phase>test</phase>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
 						<goals>
-							<goal>java</goal>
+							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<mainClass>vince.gencode.App</mainClass>
-							<arguments>
-
-							</arguments>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

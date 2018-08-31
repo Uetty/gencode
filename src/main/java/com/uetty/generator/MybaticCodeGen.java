@@ -16,6 +16,7 @@ import java.sql.Statement;
 
 import org.mybatis.generator.api.ShellRunner;
 
+import com.uetty.generator.constant.Config;
 import com.uetty.generator.util.IHashMap;
 
 /**
