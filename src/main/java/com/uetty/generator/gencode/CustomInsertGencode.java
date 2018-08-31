@@ -2,8 +2,8 @@ package com.uetty.generator.gencode;
 
 import java.util.List;
 
-import com.uetty.generator.scan.Column;
-import com.uetty.generator.scan.Table;
+import com.uetty.generator.db.Column;
+import com.uetty.generator.db.Table;
 import com.uetty.generator.util.DbStringUtil;
 
 public class CustomInsertGencode {

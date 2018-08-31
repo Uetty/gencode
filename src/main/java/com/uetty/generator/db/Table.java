@@ -1,4 +1,4 @@
-package com.uetty.generator.scan;
+package com.uetty.generator.db;
 
 import java.util.List;
 

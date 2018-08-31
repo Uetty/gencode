@@ -1,4 +1,4 @@
-package com.uetty.generator.scan;
+package com.uetty.generator.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class TableScanner {
 
 	private static final String GET_TABLE_COLUMN = "SELECT `COLUMN_NAME`,`COLUMN_KEY`,`DATA_TYPE`,`COLUMN_TYPE`,`EXTRA` FROM information_schema.`COLUMNS` WHERE `TABLE_SCHEMA` = ? AND `TABLE_NAME` = ?";
 	
-	private static List<Column> searchColumn(Connection conn, String databaseName, String tableName,
+	public static List<Column> searchColumn(Connection conn, String databaseName, String tableName,
 			TypeGen typeGen) {
 		List<Column> list = new ArrayList<Column>();
 		PreparedStatement pstmt = null;
@@ -52,8 +52,22 @@ public class TableScanner {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			closeCloseable(rs);
+			closeCloseable(pstmt);
 		}
 		return list;
 		
+	}
+	
+	private static void closeCloseable(AutoCloseable con) {
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.uetty.generator.scan;
+package com.uetty.generator.db;
 
 import com.uetty.generator.types.JdbcType;
 import com.uetty.generator.types.KeyType;

@@ -13,11 +13,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.mybatis.generator.api.ShellRunner;
+
+import com.uetty.generator.util.IHashMap;
 
 /**
  * Hello world!
@@ -27,75 +26,67 @@ public class MybaticCodeGen {
 
 	final static String driverClassName = "com.mysql.jdbc.Driver";
 	final static String searchTablesSql = "show tables;";
-	final static String OUT_FILE_OPT = "-o";
-	final static String DB_SERVER_OPT = "-s";
-	final static String DB_USER_OPT = "-u";
-	final static String DB_PASS_OPT = "-p";
-	final static String PKG_ENTITY_OPT = "-e";
-	final static String PKG_MAPPER_OPT = "-m";
-	final static String PKG_DAO_OPT = "-d";
-	final static String PKG_BASE_OPT = "-b";
-
-	static class IHashMap<K, V> extends HashMap<K, V> {
-		private static final long serialVersionUID = 1L;
-		public void putIfNotExist(K key, V value) {
-			if (get(key) == null) {
-				put(key, value);
-			}
-		}
-	}
 	
-	public static void main(String[] args) {
-
+	
+	
+	private static IHashMap<String, String> getParams(String[] args) {
 		IHashMap<String, String> cmap = new IHashMap<String, String>();
 		
 		for (int i = 1; i < args.length; i+=2) {
-			if (PKG_BASE_OPT.equals(args[i-1].toLowerCase())) {
+			if (CmdOpt.PKG_BASE_OPT.str.equals(args[i-1].toLowerCase())) {
 				cmap.put(args[i-1].toLowerCase(), args[i]);
-				cmap.put(PKG_DAO_OPT, cmap.get(PKG_BASE_OPT) + ".mapper");
-				cmap.put(PKG_MAPPER_OPT, cmap.get(PKG_BASE_OPT) + ".mapper");
-				cmap.put(PKG_ENTITY_OPT, cmap.get(PKG_BASE_OPT) + ".entity");
+				cmap.put(CmdOpt.PKG_DAO_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".mapper");
+				cmap.put(CmdOpt.PKG_MAPPER_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".mapper");
+				cmap.put(CmdOpt.PKG_ENTITY_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".entity");
 			}
 		}
 		for (int i = 1; i < args.length; i+=2) {
 			cmap.put(args[i-1].toLowerCase(), args[i]);
 		}
 		
-		cmap.putIfNotExist(DB_SERVER_OPT, Config.get("database.url"));
-		cmap.putIfNotExist(DB_USER_OPT, Config.get("database.username"));
-		cmap.putIfNotExist(DB_PASS_OPT, Config.get("database.password"));
-		cmap.putIfNotExist(PKG_ENTITY_OPT, Config.get("package.entity"));
-		cmap.putIfNotExist(PKG_MAPPER_OPT, Config.get("package.mapper"));
-		cmap.putIfNotExist(PKG_DAO_OPT, Config.get("package.dao"));
-		cmap.putIfNotExist(OUT_FILE_OPT, Config.get("output.basefile"));
+		cmap.putIfNotExist(CmdOpt.DB_SERVER_OPT.str, Config.get("database.url"));
+		cmap.putIfNotExist(CmdOpt.DB_USER_OPT.str, Config.get("database.username"));
+		cmap.putIfNotExist(CmdOpt.DB_PASS_OPT.str, Config.get("database.password"));
+		cmap.putIfNotExist(CmdOpt.PKG_ENTITY_OPT.str, Config.get("package.entity"));
+		cmap.putIfNotExist(CmdOpt.PKG_MAPPER_OPT.str, Config.get("package.mapper"));
+		cmap.putIfNotExist(CmdOpt.PKG_DAO_OPT.str, Config.get("package.dao"));
+		cmap.putIfNotExist(CmdOpt.OUT_FILE_OPT.str, Config.get("output.basefile"));
+		
+		return cmap;
+	}
+	
+	public static void main(String[] args) {
+
+		IHashMap<String, String> cmap = getParams(args);
 		
 		Connection conn = null;
 		try {
 			Class<?> driverClass = Class.forName(driverClassName);
 			String driverJarPath = getDriverJarPath(driverClass);
 			
-			conn = DriverManager.getConnection(cmap.get(DB_SERVER_OPT), cmap.get(DB_USER_OPT), cmap.get(DB_PASS_OPT));
+			conn = DriverManager.getConnection(cmap.get(CmdOpt.DB_SERVER_OPT.str),
+					cmap.get(CmdOpt.DB_USER_OPT.str), cmap.get(CmdOpt.DB_PASS_OPT.str));
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(searchTablesSql);
 			if (resultSet.first()) {
-				File file = new File(cmap.get(OUT_FILE_OPT)+"/xml/");
+				File file = new File(cmap.get(CmdOpt.OUT_FILE_OPT.str)+"/xml/");
 				if(!file.exists()){
 					file.mkdirs();
 				}
 				String template = readTemplate();
 				template = template.replaceAll("\\$\\{database.driver\\}", driverClassName);
-				template = template.replaceAll("\\$\\{database.url\\}", cmap.get(DB_SERVER_OPT));
-				template = template.replaceAll("\\$\\{database.username\\}", cmap.get(DB_USER_OPT));
-				template = template.replaceAll("\\$\\{database.password\\}", cmap.get(DB_PASS_OPT));
-				template = template.replaceAll("\\$\\{package.entity\\}", cmap.get(PKG_ENTITY_OPT));
-				template = template.replaceAll("\\$\\{output.basefile\\}", cmap.get(OUT_FILE_OPT));
-				template = template.replaceAll("\\$\\{package.mapper\\}", cmap.get(PKG_MAPPER_OPT));
-				template = template.replaceAll("\\$\\{package.dao\\}", cmap.get(PKG_DAO_OPT));
+				template = template.replaceAll("\\$\\{database.url\\}", cmap.get(CmdOpt.DB_SERVER_OPT.str));
+				template = template.replaceAll("\\$\\{database.username\\}", cmap.get(CmdOpt.DB_USER_OPT.str));
+				template = template.replaceAll("\\$\\{database.password\\}", cmap.get(CmdOpt.DB_PASS_OPT.str));
+				template = template.replaceAll("\\$\\{package.entity\\}", cmap.get(CmdOpt.PKG_ENTITY_OPT.str));
+				template = template.replaceAll("\\$\\{output.basefile\\}", cmap.get(CmdOpt.OUT_FILE_OPT.str));
+				template = template.replaceAll("\\$\\{package.mapper\\}", cmap.get(CmdOpt.PKG_MAPPER_OPT.str));
+				template = template.replaceAll("\\$\\{package.dao\\}", cmap.get(CmdOpt.PKG_DAO_OPT.str));
 				template = template.replaceAll("\\$\\{mysql.connector.path\\}", driverJarPath);
 				
 				do {
 					String tableName = resultSet.getString(1);
-					File outFile = writeConfig(template, tableName, cmap.get(OUT_FILE_OPT));
+					File outFile = writeConfig(template, tableName, cmap.get(CmdOpt.OUT_FILE_OPT.str));
 					ShellRunner.main(new String[]{"-configfile",outFile.getAbsolutePath(),"-overwrite"});
 				} while (resultSet.next());
 			}
