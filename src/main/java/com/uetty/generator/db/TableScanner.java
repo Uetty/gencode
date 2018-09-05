@@ -13,7 +13,7 @@ import com.uetty.generator.types.TypeGen;
 
 public class TableScanner {
 
-	private static final String GET_TABLE_COLUMN = "SELECT `COLUMN_NAME`,`COLUMN_KEY`,`DATA_TYPE`,`COLUMN_TYPE`,`EXTRA` FROM information_schema.`COLUMNS` WHERE `TABLE_SCHEMA` = ? AND `TABLE_NAME` = ?";
+	private static final String GET_TABLE_COLUMN = "SELECT `COLUMN_NAME`,`COLUMN_KEY`,`DATA_TYPE`,`COLUMN_TYPE`,`EXTRA`,`COLUMN_COMMENT` FROM information_schema.`COLUMNS` WHERE `TABLE_SCHEMA` = ? AND `TABLE_NAME` = ?";
 	
 	public static List<Column> searchColumn(Connection conn, String databaseName, String tableName,
 			TypeGen typeGen) {
@@ -36,11 +36,13 @@ public class TableScanner {
 				String columnType = rs.getString("COLUMN_TYPE");
 				String columnKey = rs.getString("COLUMN_KEY");
 				String extra = rs.getString("EXTRA");
+				String comment = rs.getString("COLUMN_COMMENT");
 				Column col = new Column();
 				col.setName(columnName);
 				col.setJdbcType(typeGen.getJdbcType(dataType, columnType));
 				col.setKeyType(KeyType.fromName(columnKey));
 				col.setAutoIncrement("auto_increment".equalsIgnoreCase(extra));
+				col.setComment(comment);
 				list.add(col);
 			}
 			

@@ -11,6 +11,8 @@ public class Column {
 	
 	JdbcType jdbcType;
 	
+	String comment;
+	
 	boolean autoIncrement;
 
 	public String getName() {
@@ -43,5 +45,13 @@ public class Column {
 
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement = autoIncrement;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }
