@@ -35,6 +35,7 @@ public class CustomUpdateGencode {
 				sql.append(" AND ");
 			}
 			sql.append(DbStringUtil.toSqlField(cols.get(i).getName()) + " = ?");
+			count++;
 		}
 		return sql.toString();
 	}
