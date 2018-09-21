@@ -29,7 +29,6 @@ public class MybaticCodeGen {
 	final static String searchTablesSql = "show tables;";
 	
 	
-	
 	private static IHashMap<String, String> getParams(String[] args) {
 		IHashMap<String, String> cmap = new IHashMap<String, String>();
 		
