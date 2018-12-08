@@ -1,35 +1,23 @@
 ## gencode
 
-You can use the [editor on GitHub](https://github.com/Uetty/entity-generator/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+数据库表转实体、生成通用jdbc代码
 
 ### 使用
 
 ```markdown
-Syntax highlighted code block
+1. 打包
+mvn install
+2. 新建别名
+alias gencode='java -jar /home/root/.m2/repository/com/uetty/bean-generator/1.0.2-RC/bean-generator-1.0.2-RC-jar-with-dependencies.jar'
+3. 命令行查看操作命令
+gencode
+4. 模式选择 -m 1（或者2)   1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下   2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
+5. 示例
+gencode -m 2 --tb t_require --gt 7 --jo require
+gencode -m 2 --tb t_req_attachment --gt 1 --jo attachment
+gencode -m 1 --pe com.xxx.plugin.yyy.mo
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Uetty/entity-generator/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
