@@ -8,7 +8,7 @@
 1. 打包
 mvn install
 2. 新建别名
-alias gencode='java -jar /home/root/.m2/repository/com/uetty/bean-generator/1.0.2-RC/bean-generator-1.0.2-RC-jar-with-dependencies.jar'
+alias gencode='java -jar /home/vince/.m2/repository/com/uetty/gencode/1.0.2-RC/gencode-1.0.2-RC-jar-with-dependencies.jar'
 3. 命令行查看操作命令
 gencode
 4. 模式选择 -m 1（或者2)   1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下   2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
