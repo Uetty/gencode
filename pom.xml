@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.uetty</groupId>
-	<artifactId>bean-generator</artifactId>
+	<artifactId>gencode</artifactId>
 	<version>1.0.2-RC</version>
 	<packaging>jar</packaging>
 
