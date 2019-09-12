@@ -38,7 +38,7 @@ public class MybatisEntityGencode {
         String setterName = "set" + javaName.substring(0,1).toUpperCase() + javaName.substring(1);
         String getterName = "get" + javaName.substring(0,1).toUpperCase() + javaName.substring(1);
 
-        sb.append(TAB).append("public ").append(col.getJdbcType().javaClass().getName());
+        sb.append(TAB).append("public ").append(col.getJdbcType().javaClass().getSimpleName());
         sb.append(" ").append(getterName).append(" () {");
         sb.append(NLINE).append(DTAB);
         sb.append("return this.").append(javaName).append(";");
@@ -46,7 +46,7 @@ public class MybatisEntityGencode {
 
         sb.append(NLINE);
         sb.append(TAB).append("public void ").append(setterName).append(" (");
-        sb.append(col.getJdbcType().javaClass().getName()).append(" ").append(javaName);
+        sb.append(col.getJdbcType().javaClass().getSimpleName()).append(" ").append(javaName);
         sb.append(") {");
         sb.append(NLINE).append(DTAB);
         sb.append("this.").append(javaName).append(" = ").append(javaName).append(";");
@@ -60,7 +60,7 @@ public class MybatisEntityGencode {
         StringBuilder sb = new StringBuilder();
         for (Column col : columns) {
             sb.append(NLINE).append(TAB);
-            sb.append("private ").append(col.getJdbcType().javaClass().getName());
+            sb.append("private ").append(col.getJdbcType().javaClass().getSimpleName());
             sb.append(" ").append(DbStringUtil.underLineToCamelStyle(col.getName()));
         }
         sb.append(NLINE);
@@ -94,4 +94,5 @@ public class MybatisEntityGencode {
         File outputFile = getOutputFile(config, OptUtil.getEntityClassName(tb, config));
         FileTool.writeString(outputFile, data);
     }
+
 }
