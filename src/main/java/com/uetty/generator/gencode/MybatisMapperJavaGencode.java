@@ -28,6 +28,7 @@ public class MybatisMapperJavaGencode {
         data = data.replace("${importPackage-}", "import " + OptUtil.getEntityFullClass(tb,config) + ";");
         data = data.replace("${mapperClass-}",OptUtil.getMapperClass(tb,config));
         data = data.replace("${entityClass-}",OptUtil.getEntityClassName(tb,config));
+        data = data.replace("${entityName-}",OptUtil.getEntityName(tb,config));
         Column idCol = OptUtil.getIdCol(tb);
         data = data.replace("${idClass-}", idCol != null ? idCol.getJdbcType().javaClass().getName() : "");
         data = data.replace("${idProp-}", idCol == null ? "" : DbStringUtil.underLineToCamelStyle(idCol.getName()));
