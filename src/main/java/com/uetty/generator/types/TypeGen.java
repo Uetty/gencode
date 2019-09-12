@@ -41,6 +41,7 @@ public class TypeGen {
 				return type;
 			}
 		}
-		return null;
+		System.out.println(dataType);
+		return JdbcType.varchar_n;
 	}
 }

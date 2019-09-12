@@ -20,7 +20,7 @@ public class App {
 		if (args.length >= 2) {
 			if (CmdOpt.FUNCTION_SELECT_OPT.str.equals(args[0])) {
 				if (Config.FUNCTION_MYBATIS_GEN.equals(args[1])) {
-					MybaticCodeGen.main(args);
+					CustomMybatisCodeGen.main(args);
 					return;
 				}
 				if (Config.FUNCTION_CUSTOM_GEN.equals(args[1])) {
@@ -31,7 +31,7 @@ public class App {
 				return;
 			}
 		}
-		MybaticCodeGen.main(args);
+		CustomMybatisCodeGen.main(args);
 	}
 	
 	private static void printOptHelp(String opt, String desc) {
