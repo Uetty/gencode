@@ -19,7 +19,7 @@ public class CustomSelectGencode {
 			
 			String javaCode = templateStr.replace("{0}", setter);
 			
-			String resultSetFunc = cols.get(i).getJdbcType().resultMethod();
+			String resultSetFunc = cols.get(i).getJdbcType().names();
 			javaCode = javaCode.replace("{1}", resultSetFunc);
 			javaCode = javaCode.replace("{2}", colName);
 			sb.append(javaCode + "\n");
