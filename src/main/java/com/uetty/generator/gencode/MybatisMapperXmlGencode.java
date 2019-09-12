@@ -59,8 +59,10 @@ public class MybatisMapperXmlGencode {
             if (col.getAutoIncrement()) {
                 continue;
             }
-            if (insertCount > 0) sql.append(", ");
-            if (insertCount % 4 == 0) sql.append(NLINE).append(DTAB);
+            if (insertCount > 0) {
+                sql.append(", ");
+                if (insertCount % 4 == 0) sql.append(NLINE).append(DTAB);
+            }
             sql.append(DbStringUtil.toSqlField(col.getName()));
             insertCount++;
         }
@@ -71,8 +73,10 @@ public class MybatisMapperXmlGencode {
             if (col.getAutoIncrement()) {
                 continue;
             }
-            if (insertCount > 0) sql.append(", ");
-            if (insertCount % 4 == 0) sql.append(NLINE).append(DTAB);
+            if (insertCount > 0) {
+                sql.append(", ");
+                if (insertCount % 4 == 0) sql.append(NLINE).append(DTAB);
+            }
             sql.append("#{").append(DbStringUtil.underLineToCamelStyle(col.getName())).append("}");
             insertCount++;
         }
@@ -86,9 +90,11 @@ public class MybatisMapperXmlGencode {
         List<Column> columns = tb.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             Column col = columns.get(i);
+            if (i > 0) {
+                sb.append(", ");
+                if (i % 6 == 0) sb.append(NLINE).append(TAB);
+            }
             sb.append(DbStringUtil.toSqlField(col.getName()));
-            if (i < columns.size() - 1) sb.append(", ");
-            if (i % 6 == 0) sb.append(NLINE).append(TAB);
         }
         return sb.toString();
     }
@@ -99,16 +105,17 @@ public class MybatisMapperXmlGencode {
         sql.append(DTAB).append("SET");
         List<Column> columns = tb.getColumns();
         Column identify = null;
-        for (int i = 0; i < columns.size(); i++) {
-            Column col = columns.get(i);
+        int insertCount = 0;
+        for (Column col : columns) {
             if (col.getKeyType() == KeyType.pri) {
                 identify = col;
                 continue;
             }
-            if (i > 0) sql.append(", ");
+            if (insertCount > 0) sql.append(", ");
             sql.append(NLINE).append(DTAB);
             sql.append(DbStringUtil.toSqlField(col.getName()));
             sql.append(" = #{").append(DbStringUtil.underLineToCamelStyle(col.getName())).append("}");
+            insertCount++;
         }
         sql.append(NLINE).append(DTAB);
         if (identify != null) {
@@ -131,7 +138,7 @@ public class MybatisMapperXmlGencode {
         if (identify != null) {
             sb.append(DTAB);
             sb.append("<id column=\"").append(identify.getName()).append("\" jdbcType=\"");
-            sb.append(identify.getJdbcType().dataType().toUpperCase()).append("\" property=\"");
+            sb.append(identify.getJdbcType().names().toUpperCase()).append("\" property=\"");
             sb.append(DbStringUtil.underLineToCamelStyle(identify.getName())).append("\"/>");
         }
         for (Column col : columns) {
@@ -140,7 +147,8 @@ public class MybatisMapperXmlGencode {
             }
             sb.append(NLINE).append(DTAB);
             sb.append("<result column=\"").append(col.getName()).append("\" jdbcType=\"");
-            sb.append(col.getJdbcType().dataType().toUpperCase()).append("\" property=\"");
+
+            sb.append(col.getJdbcType().names().toUpperCase()).append("\" property=\"");
             sb.append(DbStringUtil.underLineToCamelStyle(col.getName())).append("\"/>");
         }
         return sb.toString();

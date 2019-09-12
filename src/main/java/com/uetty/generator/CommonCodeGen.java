@@ -1,16 +1,12 @@
 package com.uetty.generator;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.uetty.generator.db.Column;
 import com.uetty.generator.db.TableScanner;
 import com.uetty.generator.types.TypeGen;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonCodeGen {
 
@@ -128,7 +124,7 @@ public class CommonCodeGen {
 			String temp = codeTemplate;
 			
 			if (resultMethodPlaceholder != null) {
-				temp = temp.replaceAll(resultMethodPlaceholder, resultMethodAdapter.transfer(col.getJdbcType().resultMethod()));
+				temp = temp.replaceAll(resultMethodPlaceholder, resultMethodAdapter.transfer(col.getJdbcType().names()));
 			}
 			
 			if (datatypePlaceholder != null) {

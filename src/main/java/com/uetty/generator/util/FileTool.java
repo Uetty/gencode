@@ -31,6 +31,9 @@ public class FileTool {
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
 			file.createNewFile();
+		} else {
+			file.delete();
+			file.createNewFile();
 		}
 		try (FileOutputStream fis = new FileOutputStream(file, true)) {
 			fis.write(string.getBytes());
