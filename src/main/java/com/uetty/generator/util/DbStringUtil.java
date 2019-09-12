@@ -10,19 +10,26 @@ public class DbStringUtil {
 	 * 下划线命名转驼峰
 	 */
 	public static String underLineToCamelStyle (String str) {
+		StringBuilder sb = new StringBuilder();
+		boolean shift = false;
 		for (int i = 0; i < str.length(); i++) {
 			char c = str.charAt(i);
-			if (c != '_') {
-				continue;
+			if (c == '_') {
+				shift = true;
+			} else {
+				if (shift) {
+					if ((c >= 'a' && c <= 'z')) {
+						c = (char) (c - 32);
+					}
+					shift = false;
+				}
+				sb.append(c);
 			}
-			str = str.substring(0, i) + str.substring(i + 1);
-			if (i < str.length()) {
-				str = str.substring(0, i) + str.substring(i, i + 1).toUpperCase()
-						+ str.substring(i + 1);
-			}
-			i--;
 		}
-		return str;
+		if (sb.length() > 0) {
+			sb.replace(0, 1, sb.substring(0, 1).toLowerCase());
+		}
+		return sb.toString();
 	}
 	
 	/**
@@ -31,16 +38,18 @@ public class DbStringUtil {
 	 * @return
 	 */
 	public static String camelToUnderLineStyle (String str) {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < str.length(); i++) {
 			char c = str.charAt(i);
-			if (c < 'A' || c > 'Z') {
-				continue;
+			if (c >= 'A' && c <= 'Z') {
+				sb.append("_");
+				c = (char) (c + 32);
 			}
-			char u = (char) (c + 32);
-			str = str.substring(0, i) + '_' + u + str.substring(i + 1);
-			i++;
+			sb.append(c);
 		}
-		return str;
+		while (sb.length() > 0 && sb.charAt(0) == '_') {
+			sb.delete(0, 1);
+		}
+		return sb.toString();
 	}
-	
 }

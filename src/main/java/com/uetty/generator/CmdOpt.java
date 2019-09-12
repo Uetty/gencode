@@ -26,7 +26,9 @@ public enum CmdOpt {
 	PKG_ENTITY_OPT("--pe", "mybatis\u6a21\u5f0fEntity\u5305\u540d"),
 	PKG_MAPPER_OPT("--pm", "mybatis\u6a21\u5f0fMapper XML\u6240\u5728java\u5305\u540d"),
 	PKG_DAO_OPT("--pd", "mybatis\u6a21\u5f0fMapper Java\u6240\u5728\u5305\u540d"),
-	PKG_BASE_OPT("--pb", "mybatis\u6a21\u5f0fbase\u5305\u540d\uff0c\u8bbe\u7f6e\u4e4b\u540eentity\u3001mapper\u3001dao\u53ef\u4e0d\u8bbe\u7f6e");
+	PKG_BASE_OPT("--pb", "mybatis\u6a21\u5f0fbase\u5305\u540d\uff0c\u8bbe\u7f6e\u4e4b\u540eentity\u3001mapper\u3001dao\u53ef\u4e0d\u8bbe\u7f6e"),
+	TABLE_PREFIX_OPT("--pf", "mybatis\u6a21\u5f0f\u8868\u540d\u524d\u7f00\uff0c\u8bbe\u7f6e\u4e4b\u540e\u5b9e\u4f53\u540d\u4e0d\u5305\u542b\u524d\u7f00\u90e8\u5206"),
+	;
 	
 	public final String str;
 	public final String desc;

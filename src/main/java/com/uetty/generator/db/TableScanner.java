@@ -1,15 +1,15 @@
 package com.uetty.generator.db;
 
+import com.uetty.generator.coderely.StatementUtil;
+import com.uetty.generator.types.KeyType;
+import com.uetty.generator.types.TypeGen;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.uetty.generator.coderely.StatementUtil;
-import com.uetty.generator.types.KeyType;
-import com.uetty.generator.types.TypeGen;
 
 public class TableScanner {
 

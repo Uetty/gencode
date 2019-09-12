@@ -1,0 +1,7 @@
+package ${entityPackage-};
+
+${importPackage-}
+
+public class ${className-} {
+${classMembers-}
+}

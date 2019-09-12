@@ -4,6 +4,7 @@ public enum KeyType {
 
 	none,
 	pri,
+	uni,
 	mul;
 	
 	public static KeyType fromName(String name) {
