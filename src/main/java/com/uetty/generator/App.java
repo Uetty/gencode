@@ -27,7 +27,7 @@ public class App {
 					CustomCodeGen.main(args);
 					return;
 				}
-				System.out.println("fs value invalid");
+				System.out.println(CmdOpt.FUNCTION_SELECT_OPT.str + " value invalid");
 				return;
 			}
 		}
