@@ -47,7 +47,7 @@ public class CustomMybatisCodeGen {
         cmap.putIfNotExist(CmdOpt.PKG_ENTITY_OPT.str, Config.get("package.entity"));
         cmap.putIfNotExist(CmdOpt.PKG_MAPPER_OPT.str, Config.get("package.mapper"));
         cmap.putIfNotExist(CmdOpt.PKG_DAO_OPT.str, Config.get("package.dao"));
-        cmap.putIfNotExist(CmdOpt.OUT_FILE_OPT.str, Config.get("output.basefile"));
+        cmap.putIfNotExist(CmdOpt.OUT_FILE_OPT.str, Config.get("mybatis.output.folder"));
         cmap.putIfNotExist(CmdOpt.TYPE_TINYINT_OPT.str, TypeGen.TYPE_WITH_BOOLEAN + "");
         return cmap;
     }
