@@ -62,6 +62,7 @@ public class MybatisEntityGencode {
             sb.append(NLINE).append(TAB);
             sb.append("private ").append(col.getJdbcType().javaClass().getSimpleName());
             sb.append(" ").append(DbStringUtil.underLineToCamelStyle(col.getName()));
+            sb.append(";");
         }
         sb.append(NLINE);
 
