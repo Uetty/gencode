@@ -18,6 +18,7 @@ public class OptUtil {
         String tableName = tb.getName();
         String prefix = config.get(CmdOpt.TABLE_PREFIX_OPT.str);
         if (prefix == null) prefix = "";
+        prefix = prefix.trim();
         if (prefix.length() > 0 && tableName.startsWith(prefix)) tableName = tableName.substring(prefix.length());
         return DbStringUtil.underLineToCamelStyle(tableName);
     }
