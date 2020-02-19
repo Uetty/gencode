@@ -1,7 +1,5 @@
 package ${mapperPackage-};
-
 ${importPackage-}
-
 public interface ${mapperClass-} {
 
     ${entityClass-} getById(${idClass-} ${idProp-});

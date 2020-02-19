@@ -21,11 +21,15 @@ linux 系统下，在~/.bashrc目录下补充如下一行，命令行执行`sour
 -->
 3. 命令行查看操作命令
 gencode
-4. 模式选择 -m 1（或者2)   1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下   2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
+4. 模式选择 -m 1（或者2)
+```
+1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下   2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
+```
+   
 5. 示例
 > gencode -m 2 --tb t_require --gt 7 --jo require
 > gencode -m 2 --tb t_req_attachment --gt 1 --jo attachment
-> gencode -m 1 --pe com.xxx.plugin.yyy.mo
+> gencode -m 1 --of /gencode/ --pe com.xxx.xxx.bean --pd com.xxx.xxx.dao --ds Dao --pf tb_
 
 
 

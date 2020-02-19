@@ -10,10 +10,10 @@ ${baseColumnList-}
     </sql>
 
     <select id="getById" parameterType="${idFullClass-}" resultMap="BaseResultMap">
-     SELECT
-     <include refid="Base_Column_List" />
-     FROM `${tableName-}`
-     WHERE `${idColumn-}` = #{${idProp-}}
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM `${tableName-}`
+		WHERE `${idColumn-}` = #{${idProp-}}
     </select>
 
     <insert id="insert" parameterType="${entityFullClass-}"${generateKey-}>
@@ -25,8 +25,8 @@ ${updateSQL-}
     </update>
 
     <delete id="delete" parameterType="${idFullClass-}">
-    DELETE FROM `${tableName-}`
-    WHERE `${idColumn-}` = #{${idProp-}}
+        DELETE FROM `${tableName-}`
+        WHERE `${idColumn-}` = #{${idProp-}}
     </delete>
 
 </mapper>
