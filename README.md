@@ -29,7 +29,9 @@ gencode
    
 5. 示例
 > gencode -m 2 --tb t_require --gt 7 --jo require
+
 > gencode -m 2 --tb t_req_attachment --gt 1 --jo attachment
+
 > gencode -m 1 --of /gencode/ --pe com.xxx.xxx.bean --pd com.xxx.xxx.dao --ds Dao --pf tb_
 
 
