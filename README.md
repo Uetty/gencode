@@ -38,7 +38,7 @@ gencode
 
 > gencode -m 1 --of /gencode/ --pe com.xxx.xxx.bean --pd com.xxx.xxx.dao --ds Dao --pf tb_
 
-6. 配置shell文件`gencode.sh`使用
+6. 配置shell文件`gencode.sh`并使用
 ```
 #!/bin/bash
 
