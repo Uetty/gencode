@@ -34,27 +34,28 @@ public class CustomMybatisCodeGen {
             if (CmdOpt.PKG_BASE_OPT.str.equals(args[i-1].toLowerCase())) {
                 cmap.put(args[i-1].toLowerCase(), args[i]);
                 cmap.put(CmdOpt.PKG_DAO_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".mapper");
-                cmap.put(CmdOpt.PKG_MAPPER_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".mapper");
                 cmap.put(CmdOpt.PKG_ENTITY_OPT.str, cmap.get(CmdOpt.PKG_BASE_OPT.str) + ".entity");
             }
         }
         for (int i = 1; i < args.length; i+=2) {
             cmap.put(args[i-1].toLowerCase(), args[i]);
         }
+        cmap.putIfNotExist(CmdOpt.DB_DRIVER_OPT.str, Config.get("database.driver"));
         cmap.putIfNotExist(CmdOpt.DB_SERVER_OPT.str, Config.get("database.url"));
         cmap.putIfNotExist(CmdOpt.DB_USER_OPT.str, Config.get("database.username"));
         cmap.putIfNotExist(CmdOpt.DB_PASS_OPT.str, Config.get("database.password"));
         cmap.putIfNotExist(CmdOpt.PKG_ENTITY_OPT.str, Config.get("package.entity"));
-        cmap.putIfNotExist(CmdOpt.PKG_MAPPER_OPT.str, Config.get("package.mapper"));
         cmap.putIfNotExist(CmdOpt.PKG_DAO_OPT.str, Config.get("package.dao"));
+        cmap.putIfNotExist(CmdOpt.DAO_SUFFIX_OPT.str, Config.get("mapper.suffix"));
         cmap.putIfNotExist(CmdOpt.OUT_FILE_OPT.str, Config.get("mybatis.output.folder"));
         cmap.putIfNotExist(CmdOpt.TYPE_TINYINT_OPT.str, TypeGen.TYPE_WITH_BOOLEAN + "");
         return cmap;
     }
 
-    @SuppressWarnings("Duplicates")
+    @SuppressWarnings({"Duplicates", "ConstantConditions"})
     private static Connection getConnection(IHashMap<String, String> params) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
+        String driver = params.get(CmdOpt.DB_DRIVER_OPT.str);
+        Class.forName(driver.trim());
         String url = params.get(CmdOpt.DB_SERVER_OPT.str);
         String username = params.get(CmdOpt.DB_USER_OPT.str);
         String password = params.get(CmdOpt.DB_PASS_OPT.str);
@@ -97,7 +98,7 @@ public class CustomMybatisCodeGen {
     public static void main(String[] args) {
         IHashMap<String,String> params = getParams(args);
 
-        Connection conn = null;
+        Connection conn;
         try {
 
             conn = getConnection(params);
@@ -126,17 +127,17 @@ public class CustomMybatisCodeGen {
     }
 
     private static String readMapperXmlTemplate() throws IOException {
-        try (InputStream is = MybaticCodeGen.class.getResourceAsStream("/template/mapper.xml.tmp")) {
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/mapper.xml.tmp")) {
             return String.join("\n",FileTool.readLines(is).toArray(new String[0]));
         }
     }
     private static String readMapperJavaTemplate() throws IOException {
-        try (InputStream is = MybaticCodeGen.class.getResourceAsStream("/template/mapper.java.tmp")) {
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/mapper.java.tmp")) {
             return String.join("\n", FileTool.readLines(is).toArray(new String[0]));
         }
     }
     private static String readEntityJavaTemplate() throws IOException {
-        try (InputStream is = MybaticCodeGen.class.getResourceAsStream("/template/entity.java.tmp")) {
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/entity.java.tmp")) {
             return String.join("\n", FileTool.readLines(is).toArray(new String[0]));
         }
     }

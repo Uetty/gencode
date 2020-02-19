@@ -20,7 +20,8 @@ public class MybatisMapperXmlGencode {
     private static final String NLINE = "\n";
 
     private static File getOutputFile(IHashMap<String, String> config, String tableJavaName) {
-        return new File(OptUtil.getOutputFolder(config, tableJavaName), tableJavaName + "Mapper.xml");
+        String mapperJavaSuffix = OptUtil.getMapperJavaSuffix(config);
+        return new File(OptUtil.getOutputFolder(config, tableJavaName), tableJavaName + mapperJavaSuffix + ".xml");
     }
 
     public static void generate(Table tb, String tempalateStr, IHashMap<String, String> config) throws IOException {
@@ -86,13 +87,13 @@ public class MybatisMapperXmlGencode {
 
     private static String getBaseColumnSql(Table tb) {
         StringBuilder sb = new StringBuilder();
-        sb.append(TAB);
+        sb.append(DTAB);
         List<Column> columns = tb.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             Column col = columns.get(i);
             if (i > 0) {
                 sb.append(", ");
-                if (i % 6 == 0) sb.append(NLINE).append(TAB);
+                if (i % 6 == 0) sb.append(NLINE).append(DTAB);
             }
             sb.append(DbStringUtil.toSqlField(col.getName()));
         }

@@ -86,7 +86,7 @@ public class MybatisEntityGencode {
 
         String data = tempalateStr;
         data = data.replace("${entityPackage-}", endtityPackage);
-        data = data.replace("${importPackage-}", hasDate ? "import java.util.Date;" : "");
+        data = data.replace("${importPackage-}", hasDate ? "\nimport java.util.Date;\n" : "");
         data = data.replace("${className-}", entityClass);
 
         data = data.replace("${classMembers-}", getEntityMembersCode(tb));

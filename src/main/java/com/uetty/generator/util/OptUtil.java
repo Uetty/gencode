@@ -38,7 +38,27 @@ public class OptUtil {
 
     public static String getMapperClass (Table tb, IHashMap<String, String> config) {
         String tableJavaName = getEntityClassName(tb, config);
-        return tableJavaName + "Mapper";
+
+        String mapperJavaSuffix = getMapperJavaSuffix(config);
+        return tableJavaName + mapperJavaSuffix;
+    }
+
+    public static String getMapperJavaSuffix(IHashMap<String, String> config) {
+        String mapperJavaSuffix = config.get(CmdOpt.DAO_SUFFIX_OPT.str);
+        return getFirstUpperString(mapperJavaSuffix);
+    }
+
+    private static String getFirstUpperString(String str) {
+        if (str == null) {
+            return "";
+        }
+        str = str.trim();
+        if (str.length() == 0) {
+            return str;
+        }
+        str = str.toLowerCase();
+        String firstrChar = str.charAt(0) + "";
+        return firstrChar.toUpperCase() + str.substring(1);
     }
 
     public static String getEntityClassName (Table tb, IHashMap<String, String> config) {
@@ -58,7 +78,6 @@ public class OptUtil {
 
     public static Column getIdCol(Table tb) {
         List<Column> columns = tb.getColumns();
-        Column idCol = null;
         for (Column col : columns) {
             if (col.getKeyType() == KeyType.pri) {
                 return col;
@@ -72,6 +91,7 @@ public class OptUtil {
         return idCo1 == null ? null : idCo1.getJdbcType().javaClass();
     }
 
+    @SuppressWarnings("unused")
     public static String getIdClassName(Table tb) {
         Class<?> idClass = getIdClass(tb);
         if (idClass == null) return "";

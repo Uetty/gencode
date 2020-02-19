@@ -15,6 +15,7 @@ import com.uetty.generator.gencode.CustomInsertGencode;
 import com.uetty.generator.gencode.CustomSelectGencode;
 import com.uetty.generator.gencode.CustomUpdateGencode;
 import com.uetty.generator.types.TypeGen;
+import com.uetty.generator.util.DbStringUtil;
 import com.uetty.generator.util.IHashMap;
 
 public class CustomCodeGen {
@@ -23,13 +24,14 @@ public class CustomCodeGen {
 	
 	final static String GET_CURRENT_DATABASE = "SELECT database();";
 	
+	@SuppressWarnings("ConstantConditions")
 	private static Connection getConnection(IHashMap<String, String> params) throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
+		String driver = params.get(CmdOpt.DB_DRIVER_OPT.str);
+		Class.forName(driver.trim());
 		String url = params.get(CmdOpt.DB_SERVER_OPT.str);
 		String username = params.get(CmdOpt.DB_USER_OPT.str);
 		String password = params.get(CmdOpt.DB_PASS_OPT.str);
-		Connection connection = DriverManager.getConnection(url, username, password);
-		return connection;
+		return DriverManager.getConnection(url, username, password);
 	}
 	
 	private static String getCurrentDatabase(Connection conn) throws SQLException {
@@ -47,6 +49,7 @@ public class CustomCodeGen {
 		for (int i = 1; i < args.length; i+=2) {
 			cmap.put(args[i-1].toLowerCase(), args[i]);
 		}
+		cmap.putIfNotExist(CmdOpt.DB_DRIVER_OPT.str, Config.get("database.driver"));
 		cmap.putIfNotExist(CmdOpt.DB_SERVER_OPT.str, Config.get("database.url"));
 		cmap.putIfNotExist(CmdOpt.DB_USER_OPT.str, Config.get("database.username"));
 		cmap.putIfNotExist(CmdOpt.DB_PASS_OPT.str, Config.get("database.password"));

@@ -17,7 +17,8 @@ import java.io.IOException;
 public class MybatisMapperJavaGencode {
 
     private static File getOutputFile(IHashMap<String, String> config, String tableJavaName) {
-        return new File(OptUtil.getOutputFolder(config, tableJavaName), tableJavaName + "Mapper.java");
+        String mapperJavaSuffix = OptUtil.getMapperJavaSuffix(config);
+        return new File(OptUtil.getOutputFolder(config, tableJavaName), tableJavaName + mapperJavaSuffix + ".java");
     }
 
     public static void generate(Table tb, String tempalateStr, IHashMap<String, String> config) throws IOException {
@@ -25,7 +26,7 @@ public class MybatisMapperJavaGencode {
 
         String data = tempalateStr;
         data = data.replace("${mapperPackage-}", OptUtil.getMapperPackage(config));
-        data = data.replace("${importPackage-}", "import " + OptUtil.getEntityFullClass(tb,config) + ";");
+        data = data.replace("${importPackage-}", "\nimport " + OptUtil.getEntityFullClass(tb,config) + ";\n");
         data = data.replace("${mapperClass-}",OptUtil.getMapperClass(tb,config));
         data = data.replace("${entityClass-}",OptUtil.getEntityClassName(tb,config));
         data = data.replace("${entityName-}",OptUtil.getEntityName(tb,config));

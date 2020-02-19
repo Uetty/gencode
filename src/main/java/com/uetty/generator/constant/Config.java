@@ -8,7 +8,7 @@ public class Config {
 	
 	public static String get(String key) {
 		return bundle.getString(key);
-	}	
+	}
 	
 	
 	public static final int GEN_TYPE_INSERT = 0x0001;
