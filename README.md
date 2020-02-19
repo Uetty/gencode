@@ -23,7 +23,8 @@ linux 系统下，在~/.bashrc目录下补充如下一行，命令行执行`sour
 gencode
 4. 模式选择 -m 1（或者2)
 ```
-1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下   2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
+1封装mybatis generator自动生成实体和mapper.xml,生成在~/gencode目录下
+2封装jdbc语句自动生成(需生成代码引用StatementUtil类)
 ```
    
 5. 示例
