@@ -72,15 +72,21 @@ public class CustomMybatisCodeGen {
         return dbname;
     }
 
-    private static List<Table> getTableList(Connection conn, TypeGen typeGen) throws SQLException {
+    private static List<Table> getTableList(Connection conn, TypeGen typeGen, IHashMap<String, String> params) throws SQLException {
         String dbname = getCurrentDatabase(conn);
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(SEARCH_TABLE_SQL);
         List<Table> list = new ArrayList<>();
 
+        String prefix = params.get(CmdOpt.TABLE_PREFIX_OPT.str);
+
         if (resultSet.first()) {
             do {
                 String tableName = resultSet.getString(1);
+                if (prefix != null && !tableName.startsWith(prefix)) {
+                    System.out.println("ignore table " + tableName);
+                    continue;
+                }
                 Table tb = new Table();
                 tb.setName(tableName);
                 list.add(tb);
@@ -112,7 +118,7 @@ public class CustomMybatisCodeGen {
             }
 
 
-            List<Table> tableList = getTableList(conn, typeGen);
+            List<Table> tableList = getTableList(conn, typeGen, params);
             String mapperXmlTemp = readMapperXmlTemplate();
             String mapperJavaTemp = readMapperJavaTemplate();
             String entityJavaTemp = readEntityJavaTemplate();
