@@ -1,12 +1,12 @@
-package ${mapperPackage-};
-${importPackage-}
-public interface ${mapperClass-} {
+package @{mapperPackage};
+@{importPackage}
+public interface @{mapperClass} {
 
-    ${entityClass-} getById(${idClass-} ${idProp-});
+    @{entityClass} getById(@{idClass} @{idProp});
 
-    boolean insert(${entityClass-} ${entityName-});
+    boolean insert(@{entityClass} @{entityName});
 
-    boolean update(${entityClass-} ${entityName-});
+    boolean update(@{entityClass} @{entityName});
 
-    boolean delete(${idClass-} ${idProp-});
+    boolean delete(@{idClass} @{idProp});
 }

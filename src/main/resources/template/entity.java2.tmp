@@ -1,0 +1,30 @@
+package @{entityPackage};
+@{importPackage}
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import org.beetl.sql.core.annotatoin.AutoID;
+import org.beetl.sql.core.annotatoin.Table;
+
+@Data
+@Table(name = "@{tableName}")
+@ApiModel(value = "@{tableComment}")
+public class @{className} {
+
+@for(columns){
+@cmEx(){
+    /**
+     * @{colComment}
+     */
+@xEmc}
+@ifId(){
+    @AutoID
+@dIfi}
+@cmEx(){
+    @ApiModelProperty(value = "@{colComment}")
+@xEmc}
+    @{javaFieldDeclare}
+
+@rof}
+
+}
