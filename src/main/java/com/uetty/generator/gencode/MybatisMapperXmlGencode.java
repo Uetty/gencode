@@ -28,23 +28,23 @@ public class MybatisMapperXmlGencode {
         String tableJavaName = OptUtil.getEntityClassName(tb, config);
 
         String data = tempalateStr;
-        data = data.replace("${mapperFullClass-}", OptUtil.getMapperFullClass(tb,config));
-        data = data.replace("${entityFullClass-}",OptUtil.getEntityFullClass(tb,config));
-        data = data.replace("${propertyList-}", getPropertyStrings(tb));
-        data = data.replace("${baseColumnList-}",getBaseColumnSql(tb));
-        data = data.replace("${idFullClass-}",OptUtil.getIdClassFullName(tb));
-        data = data.replace("${tableName-}",tb.getName());
+        data = data.replace("@{mapperFullClass}", OptUtil.getMapperFullClass(tb,config));
+        data = data.replace("@{entityFullClass}",OptUtil.getEntityFullClass(tb,config));
+        data = data.replace("@{propertyList}", getPropertyStrings(tb));
+        data = data.replace("@{baseColumnList}",getBaseColumnSql(tb));
+        data = data.replace("@{idFullClass}",OptUtil.getIdClassFullName(tb));
+        data = data.replace("@{tableName}",tb.getName());
         Column idCol = OptUtil.getIdCol(tb);
-        data = data.replace("${idColumn-}", idCol == null ? "" : idCol.getName());
-        data = data.replace("${idProp-}", idCol == null ? "" : DbStringUtil.underLineToCamelStyle(idCol.getName()));
+        data = data.replace("@{idColumn}", idCol == null ? "" : idCol.getName());
+        data = data.replace("@{idProp}", idCol == null ? "" : DbStringUtil.underLineToCamelStyle(idCol.getName()));
         boolean genKey = idCol != null && idCol.getAutoIncrement();
         String genKeySetting = "";
         if (genKey) {
             genKeySetting = " useGeneratedKeys=\"true\" keyProperty=\"" + idCol.getName() + "\"";
         }
-        data = data.replace("${generateKey-}", genKeySetting);
-        data = data.replace("${insertSQL-}", getInsertSql(tb));
-        data = data.replace("${updateSQL-}", getUpdateSql(tb));
+        data = data.replace("@{generateKey}", genKeySetting);
+        data = data.replace("@{insertSQL}", getInsertSql(tb));
+        data = data.replace("@{updateSQL}", getUpdateSql(tb));
 
         File outputFile = getOutputFile(config, tableJavaName);
         FileTool.writeString(outputFile, data);

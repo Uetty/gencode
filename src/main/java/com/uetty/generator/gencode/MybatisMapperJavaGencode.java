@@ -25,14 +25,14 @@ public class MybatisMapperJavaGencode {
         String tableJavaName = OptUtil.getEntityClassName(tb, config);
 
         String data = tempalateStr;
-        data = data.replace("${mapperPackage-}", OptUtil.getMapperPackage(config));
-        data = data.replace("${importPackage-}", "\nimport " + OptUtil.getEntityFullClass(tb,config) + ";\n");
-        data = data.replace("${mapperClass-}",OptUtil.getMapperClass(tb,config));
-        data = data.replace("${entityClass-}",OptUtil.getEntityClassName(tb,config));
-        data = data.replace("${entityName-}",OptUtil.getEntityName(tb,config));
+        data = data.replace("@{mapperPackage}", OptUtil.getMapperPackage(config));
+        data = data.replace("@{importPackage}", "\nimport " + OptUtil.getEntityFullClass(tb,config) + ";\n");
+        data = data.replace("@{mapperClass}",OptUtil.getMapperClass(tb,config));
+        data = data.replace("@{entityClass}",OptUtil.getEntityClassName(tb,config));
+        data = data.replace("@{entityName}",OptUtil.getEntityName(tb,config));
         Column idCol = OptUtil.getIdCol(tb);
-        data = data.replace("${idClass-}", idCol != null ? idCol.getJdbcType().javaClass().getName() : "");
-        data = data.replace("${idProp-}", idCol == null ? "" : DbStringUtil.underLineToCamelStyle(idCol.getName()));
+        data = data.replace("@{idClass}", idCol != null ? idCol.getJdbcType().javaClass().getName() : "");
+        data = data.replace("@{idProp}", idCol == null ? "" : DbStringUtil.underLineToCamelStyle(idCol.getName()));
 
         File outputFile = getOutputFile(config, tableJavaName);
         FileTool.writeString(outputFile, data);

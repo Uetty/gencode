@@ -1,5 +1,9 @@
-package ${entityPackage-};
-${importPackage-}
-public class ${className-} {
-${classMembers-}
+package @{entityPackage};
+@{importPackage}
+
+public class @{className} {
+
+@{classMembers}
+@{getterSetters}
+
 }

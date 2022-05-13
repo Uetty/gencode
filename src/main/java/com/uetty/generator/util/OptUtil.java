@@ -1,11 +1,14 @@
 package com.uetty.generator.util;
 
 import com.uetty.generator.CmdOpt;
+import com.uetty.generator.CustomMybatisCodeGen;
 import com.uetty.generator.db.Column;
 import com.uetty.generator.db.Table;
 import com.uetty.generator.types.KeyType;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -14,12 +17,46 @@ import java.util.List;
  */
 public class OptUtil {
 
+    public static String readEntityTemplate(IHashMap<String, String> config) throws IOException {
+        String templatePath = config.get(CmdOpt.TEMPLATE_ENTITY_OPT.str);
+        if (templatePath != null && templatePath.trim().length() > 0) {
+            return String.join("\n", FileTool.readLines(new File(templatePath)));
+        }
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/entity.java.tmp")) {
+            return String.join("\n", FileTool.readLines(is).toArray(new String[0]));
+        }
+    }
+
+    public static String readMapperXmlTemplate(IHashMap<String, String> config) throws IOException {
+        String templatePath = config.get(CmdOpt.TEMPLATE_MAPPER_XML_OPT.str);
+        if (templatePath != null && templatePath.trim().length() > 0) {
+            return String.join("\n", FileTool.readLines(new File(templatePath)));
+        }
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/mapper.xml.tmp")) {
+            return String.join("\n", FileTool.readLines(is).toArray(new String[0]));
+        }
+    }
+
+    public static String readMapperJavaTemplate(IHashMap<String, String> config) throws IOException {
+        String templatePath = config.get(CmdOpt.TEMPLATE_MAPPER_JAVA_OPT.str);
+        if (templatePath != null && templatePath.trim().length() > 0) {
+            return String.join("\n", FileTool.readLines(new File(templatePath)));
+        }
+        try (InputStream is = CustomMybatisCodeGen.class.getResourceAsStream("/template/mapper.java.tmp")) {
+            return String.join("\n", FileTool.readLines(is).toArray(new String[0]));
+        }
+    }
+
     public static String getEntityName(Table tb, IHashMap<String, String> config) {
         String tableName = tb.getName();
         String prefix = config.get(CmdOpt.TABLE_PREFIX_OPT.str);
+        String suffix = config.get(CmdOpt.TABLE_SUFFIX_OPT.str);
         if (prefix == null) prefix = "";
         prefix = prefix.trim();
+        if (suffix == null) suffix = "";
+        suffix = suffix.trim();
         if (prefix.length() > 0 && tableName.startsWith(prefix)) tableName = tableName.substring(prefix.length());
+        if (suffix.length() > 0 && tableName.length() > 0 && tableName.endsWith(suffix)) tableName = tableName.substring(0, tableName.length() - suffix.length());
         return DbStringUtil.underLineToCamelStyle(tableName);
     }
 

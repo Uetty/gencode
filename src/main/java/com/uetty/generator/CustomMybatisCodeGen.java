@@ -10,10 +10,15 @@ import com.uetty.generator.gencode.MybatisMapperXmlGencode;
 import com.uetty.generator.types.TypeGen;
 import com.uetty.generator.util.FileTool;
 import com.uetty.generator.util.IHashMap;
+import com.uetty.generator.util.OptUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ import java.util.List;
 public class CustomMybatisCodeGen {
 
     final static String GET_CURRENT_DATABASE = "SELECT database();";
-    final static String SEARCH_TABLE_SQL = "show tables;";
+    final static String SEARCH_TABLE_SQL = "SELECT * FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = ?";
 
     @SuppressWarnings("Duplicates")
     private static IHashMap<String, String> getParams(String[] args) {
@@ -74,21 +79,30 @@ public class CustomMybatisCodeGen {
 
     private static List<Table> getTableList(Connection conn, TypeGen typeGen, IHashMap<String, String> params) throws SQLException {
         String dbname = getCurrentDatabase(conn);
-        Statement statement = conn.createStatement();
-        ResultSet resultSet = statement.executeQuery(SEARCH_TABLE_SQL);
+        System.out.println(dbname);
+        PreparedStatement preparedStatement = conn.prepareStatement(SEARCH_TABLE_SQL);
+        preparedStatement.setString(1, dbname);
+        ResultSet resultSet = preparedStatement.executeQuery();
         List<Table> list = new ArrayList<>();
 
         String prefix = params.get(CmdOpt.TABLE_PREFIX_OPT.str);
+        String suffix = params.get(CmdOpt.TABLE_SUFFIX_OPT.str);
 
         if (resultSet.first()) {
             do {
-                String tableName = resultSet.getString(1);
+                String tableName = resultSet.getString("TABLE_NAME");
                 if (prefix != null && !tableName.startsWith(prefix)) {
                     System.out.println("ignore table " + tableName);
                     continue;
                 }
+                if (suffix != null && !tableName.endsWith(suffix)) {
+                    System.out.println("ignore table " + tableName);
+                    continue;
+                }
+                String tableComment = resultSet.getString("TABLE_COMMENT");
                 Table tb = new Table();
                 tb.setName(tableName);
+                tb.setComment(tableComment);
                 list.add(tb);
             } while (resultSet.next());
 
@@ -119,9 +133,9 @@ public class CustomMybatisCodeGen {
 
 
             List<Table> tableList = getTableList(conn, typeGen, params);
-            String mapperXmlTemp = readMapperXmlTemplate();
-            String mapperJavaTemp = readMapperJavaTemplate();
-            String entityJavaTemp = readEntityJavaTemplate();
+            String mapperXmlTemp = OptUtil.readMapperXmlTemplate(params);
+            String mapperJavaTemp = OptUtil.readMapperJavaTemplate(params);
+            String entityJavaTemp = OptUtil.readEntityTemplate(params);
             for (Table table : tableList) {
                 MybatisEntityGencode.generate(table,entityJavaTemp, params);
                 MybatisMapperJavaGencode.generate(table, mapperJavaTemp, params);
