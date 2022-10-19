@@ -95,7 +95,7 @@ public class CommonCodeGen {
 	}
 	
 	private String getCurrentDatabase(Connection conn) throws SQLException {
-		PreparedStatement pstmt = conn.prepareStatement(GET_CURRENT_DATABASE);
+		PreparedStatement pstmt = conn.prepareStatement(GET_CURRENT_DATABASE, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 		ResultSet rs = pstmt.executeQuery();
 		rs.next();
 		String dbname = rs.getString(1);

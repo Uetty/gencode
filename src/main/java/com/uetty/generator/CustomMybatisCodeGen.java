@@ -68,7 +68,7 @@ public class CustomMybatisCodeGen {
     }
 
     private static String getCurrentDatabase(Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement(GET_CURRENT_DATABASE);
+        PreparedStatement pstmt = conn.prepareStatement(GET_CURRENT_DATABASE, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         ResultSet rs = pstmt.executeQuery();
         rs.next();
         String dbname = rs.getString(1);
@@ -80,7 +80,7 @@ public class CustomMybatisCodeGen {
     private static List<Table> getTableList(Connection conn, TypeGen typeGen, IHashMap<String, String> params) throws SQLException {
         String dbname = getCurrentDatabase(conn);
         System.out.println(dbname);
-        PreparedStatement preparedStatement = conn.prepareStatement(SEARCH_TABLE_SQL);
+        PreparedStatement preparedStatement = conn.prepareStatement(SEARCH_TABLE_SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         preparedStatement.setString(1, dbname);
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Table> list = new ArrayList<>();

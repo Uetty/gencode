@@ -24,7 +24,7 @@ public class TableScanner {
 		try {
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(true);
-			pstmt = conn.prepareStatement(GET_TABLE_COLUMN);
+			pstmt = conn.prepareStatement(GET_TABLE_COLUMN, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			int index = 1;
 			StatementUtil.setValue(pstmt, index++, databaseName);
 			StatementUtil.setValue(pstmt, index++, tableName);
